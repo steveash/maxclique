@@ -4,7 +4,7 @@ maxclique
 Simple implementation of maximum clique for java
 
 Usage:
-````
+```` java
 List<T> nodesInMyGraph = ...
 
 // need to make an insteance of Weigher<T> which knows how to produce a "weight" (double)
