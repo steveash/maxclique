@@ -1,7 +1,7 @@
 maxclique
 =========
 
-Simple implementation of maximum clique for java
+Simple implementation of maximum clique for java.  Doesn't recompute weight edges more than once.  Uses simple back-tracking to avoid all 2^n comparisons.  Has "fast path" shortcut implementations for graphs with 2, 3, and 4 nodes (which is my normal case).
 
 Usage:
 ```` java
