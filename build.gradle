@@ -1,0 +1,22 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.7
+version = '1.0.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.codehaus.groovy:groovy-all:2.1.7'
+    compile 'com.carrotsearch:hppc:0.5.4'
+    compile 'com.google.guava:guava:17.0'
+
+    runtime 'org.slf4j:slf4j-log4j12:1.7.6'
+
+//    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'junit:junit:4.11'
+}
