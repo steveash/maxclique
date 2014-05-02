@@ -86,13 +86,4 @@ public class Special4MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         if (d) mask |= 1 << 0;
         return mask;
     }
-
-    private boolean greatest(double out, double in1, double in2, double in3) {
-        if (out < 0) return false;
-        return (out >= in1 && out >= in2 && out >= in3);
-    }
-
-    private Clique<T> c2(T a, T b, double totalWeight) {
-        return new Clique<>(ImmutableSet.of(a, b), totalWeight);
-    }
 }

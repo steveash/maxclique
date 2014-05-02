@@ -48,12 +48,31 @@ public class Graph<T> {
         return neighbors;
     }
 
+    public long neighborsExcludingAsMask(int vertex, long toExclude) {
+        long mask = 0;
+        for (int i = 0; i < verticies.size(); i++) {
+            if (vertex == i) continue;              // skip myself
+
+            long candidate = (1 << i);
+            if ((candidate & ~toExclude) == 0) continue;
+
+            if (weight(vertex, i) > 0) {
+                mask |= (1 << i);
+            }
+        }
+        return mask;
+    }
+
     public ImmutableSet<T> verticiesForIndexes(IntSet indexes) {
         Builder<T> builder = ImmutableSet.builder();
         for (IntCursor index : indexes) {
             builder.add(verticies.get(index.value));
         }
         return builder.build();
+    }
+
+    public T vertexAt(int index) {
+        return verticies.get(index);
     }
 
     public double weight(int a, int b) {

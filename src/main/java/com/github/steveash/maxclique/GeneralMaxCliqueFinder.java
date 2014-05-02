@@ -26,10 +26,9 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
 
     private Set<IntSet> seenCliques;            // keep track of what cliques we've already seen
     private int lastWorkedSize;                 // process partials in increasing order to "forget" seen early
-    private Deque<PartialClique<T>> work;       // work queue
+    private Deque<PartialClique> work;       // work queue
 
-    private double bestWeight = -1;             // once we finish a partial we keep track of the best
-    private IntSet bestClique = null;
+    private PartialClique bestPartial = PartialClique.nullPartial;
 
     private Graph<T> g;
 
@@ -39,7 +38,7 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         if (g.size() == 0) return Clique.nullClique();
 
         while (!work.isEmpty()) {
-            PartialClique<T> clique = work.removeFirst();
+            PartialClique clique = work.removeFirst();
             logPop(clique);
 
             int thisSize = clique.size();
@@ -61,7 +60,7 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         return convertBest();
     }
 
-    private void logPop(PartialClique<T> clique) {
+    private void logPop(PartialClique clique) {
         if (log.isDebugEnabled()) {
             log.debug("Working partial size " + clique.size() + " " + clique.getMembers());
         }
@@ -76,7 +75,7 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         return false;
     }
 
-    private void tryToAdd(PartialClique<T> clique, int toCheck) {
+    private void tryToAdd(PartialClique clique, int toCheck) {
         IntSet newMembers = clique.copyOfMembersPlus(toCheck);
         if (seenCliques.contains(newMembers)) {
             return; // don't even bother -- someone else is already working on it
@@ -97,14 +96,12 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
     }
 
     private Clique<T> convertBest() {
-        Preconditions.checkState(bestWeight >= 0);
-        return new Clique<>(g.verticiesForIndexes(bestClique), bestWeight);
+        return this.bestPartial.convertToClique(g);
     }
 
-    private void finishClique(PartialClique<T> clique) {
-        if (clique.getMemberWeight() > bestWeight) {
-            bestWeight = clique.getMemberWeight();
-            bestClique = clique.getMembers();
+    private void finishClique(PartialClique clique) {
+        if (clique.getMemberWeight() > bestPartial.getMemberWeight()) {
+            this.bestPartial = clique;
         }
     }
 
@@ -113,8 +110,7 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         seenCliques = Sets.newHashSet();    // don't follow the same path twice
         work = Queues.newArrayDeque();      // queue of partials to evaluate
 
-        bestWeight = -1;
-        bestClique = null;
+        bestPartial = PartialClique.nullPartial;
         lastWorkedSize = 0;
 
         if (log.isDebugEnabled()) {
@@ -134,6 +130,6 @@ public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         if (log.isDebugEnabled()) {
             log.debug("Adding partial to eval size " + members.size() + " " + members);
         }
-        work.addLast(new PartialClique<T>(members, leftToCheck, weight));
+        work.addLast(new PartialClique(members, leftToCheck, weight));
     }
 }

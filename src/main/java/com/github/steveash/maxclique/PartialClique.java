@@ -1,5 +1,6 @@
 package com.github.steveash.maxclique;
 
+import com.carrotsearch.hppc.IntArrayDeque;
 import com.carrotsearch.hppc.IntDeque;
 import com.carrotsearch.hppc.IntOpenHashSet;
 import com.carrotsearch.hppc.IntSet;
@@ -9,7 +10,9 @@ import com.carrotsearch.hppc.IntSet;
  * the primordial clique
  * @author Steve Ash
  */
-public class PartialClique<T> {
+public class PartialClique {
+
+    public static final PartialClique nullPartial = new PartialClique(new IntOpenHashSet(), new IntArrayDeque(), -1);
 
     private final /* immutable */ IntSet members;
     private final IntDeque leftToCheck;
@@ -43,7 +46,9 @@ public class PartialClique<T> {
         return newMembers;
     }
 
-    public IntDeque getLeftToCheck() { return leftToCheck; }
-
     public double getMemberWeight() { return memberWeight; }
+
+    public <T> Clique<T> convertToClique(Graph<T> g) {
+        return new Clique<>(g.verticiesForIndexes(this.members), memberWeight);
+    }
 }
