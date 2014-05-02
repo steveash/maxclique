@@ -13,11 +13,11 @@ public class MaskPartialClique {
 
     public static final MaskPartialClique nullInstance = new MaskPartialClique(0, 0, -1);
 
-    private final long members;
+    private final int members;
     private final double memberWeight;
-    private long leftToCheck;
+    private int leftToCheck;
 
-    public MaskPartialClique(long members, long leftToCheck, double memberWeight) {
+    public MaskPartialClique(int members, int leftToCheck, double memberWeight) {
         this.members = members;
         this.leftToCheck = leftToCheck;
         this.memberWeight = memberWeight;
@@ -28,37 +28,35 @@ public class MaskPartialClique {
     }
 
     public int popNextToCheck() {
-        int indexToCheck = Long.numberOfTrailingZeros(leftToCheck);
+        int indexToCheck = Integer.numberOfTrailingZeros(leftToCheck);
         this.leftToCheck = clearLowestBit(leftToCheck);
         return indexToCheck;
     }
 
-    private long clearLowestBit(long word) {
-        long valueOfNextToCheck = Long.lowestOneBit(word);
+    private int clearLowestBit(int word) {
+        int valueOfNextToCheck = Integer.lowestOneBit(word);
         word &= ~valueOfNextToCheck;
         return word;
     }
 
     public int size() {
-        return Long.bitCount(this.members);
+        return Integer.bitCount(this.members);
     }
 
-    public long copyOfMembersPlus(int appendThis) {
+    public int copyOfMembersPlus(int appendThis) {
         return this.members | (1 << appendThis);
     }
 
-    public long getMembers() { return members; }
-
-    public long getLeftToCheck() { return leftToCheck; }
+    public int getMembers() { return members; }
 
     public double getMemberWeight() { return memberWeight; }
 
     public <T> double candidateJoinWeight(int candidate, Graph<T> g) {
-        long membersLeft = members;
+        int membersLeft = members;
         double weightDelta = 0;
 
         while (membersLeft != 0) {
-            int indexToCheck = Long.numberOfTrailingZeros(membersLeft);
+            int indexToCheck = Integer.numberOfTrailingZeros(membersLeft);
 
             double weight = g.weight(candidate, indexToCheck);
             if (weight <= 0)
@@ -74,7 +72,7 @@ public class MaskPartialClique {
     public <T> Clique<T> convertToClique(Graph<T> g) {
         Builder<T> b = ImmutableSet.builder();
         for (int i = 0; i < g.size(); i++) {
-            long value = (1 << i);
+            int value = (1 << i);
             if ((this.members & value) != 0) {
                 b.add(g.vertexAt(i));
             }

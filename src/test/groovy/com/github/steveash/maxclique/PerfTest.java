@@ -1,7 +1,6 @@
 package com.github.steveash.maxclique;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Ignore;
@@ -29,13 +28,13 @@ public class PerfTest {
         MaxCliqueFinderFacade<String> finder = new MaxCliqueFinderFacade<>();
 
         for (int i = 3; i < 20; i++) {
-            List<Graph> in = builder.buildInput(i, GRAPH_COUNT);
-            run(in, finder);
+            List<Graph> in = builder.buildInput(i, 1).subList(0, 1);
+            run(in, finder, 1);
 
             w.reset().start();
-            run(in, finder);
+            run(in, finder, 1);
             long micros = w.stop().elapsed(TimeUnit.MICROSECONDS);
-            long count = GRAPH_COUNT * GRAPHSET_COUNT;
+            long count = 1;
 
             double avg = ((double) micros) / count;
             log.info("Graph Size " + i + " total " + micros + " avg mus per " + avg);
@@ -50,15 +49,15 @@ public class PerfTest {
         MaxCliqueFinder<String> sf = new Special4MaxCliqueFinder<>();
 
         double total = 0;
-        total += run(graphs, gf);
-        total += run(graphs, sf);
+        total += run(graphs, gf, GRAPHSET_COUNT);
+        total += run(graphs, sf, GRAPHSET_COUNT);
 
         w.start();
-        total += run(graphs, gf);
+        total += run(graphs, gf, GRAPHSET_COUNT);
         long genTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         w.reset().start();
-        total += run(graphs, sf);
+        total += run(graphs, sf, GRAPHSET_COUNT);
         long specTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         log.info("Overall total weight: " + total);
@@ -70,27 +69,27 @@ public class PerfTest {
         Stopwatch w = Stopwatch.createUnstarted();
         List<Graph> graphs = builder.buildInput(8, GRAPH_COUNT);
         MaxCliqueFinder<String> gf = new GeneralMaxCliqueFinder<>();
-        MaxCliqueFinder<String> sf = new Special64MaxCliqueFinder<>();
+        MaxCliqueFinder<String> sf = new Special32MaxCliqueFinder<>();
 
         double total = 0;
-        total += run(graphs, gf);
-        total += run(graphs, sf);
+        total += run(graphs, gf, GRAPHSET_COUNT);
+        total += run(graphs, sf, GRAPHSET_COUNT);
 
         w.start();
-        total += run(graphs, gf);
+        total += run(graphs, gf, GRAPHSET_COUNT);
         long genTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         w.reset().start();
-        total += run(graphs, sf);
+        total += run(graphs, sf, GRAPHSET_COUNT);
         long specTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         log.info("Overall total weight: " + total);
         log.info("General mus " + genTime + " , fastpath mus " + specTime);
     }
 
-    private double run(List<Graph> graphs, MaxCliqueFinder<String> gf) {
+    private double run(List<Graph> graphs, MaxCliqueFinder<String> gf, int runCount) {
         double total = 0;
-        for (int i = 0; i < GRAPHSET_COUNT; i++) {
+        for (int i = 0; i < runCount; i++) {
             for (int j = 0; j < graphs.size(); j++) {
                 Graph graph = graphs.get(j);
                 Clique<String> maximum = gf.findMaximum(graph.verticies, graph.edges);

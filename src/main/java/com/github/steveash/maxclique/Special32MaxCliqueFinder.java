@@ -7,8 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotsearch.hppc.IntOpenHashSet;
-import com.carrotsearch.hppc.LongOpenHashSet;
-import com.carrotsearch.hppc.LongSet;
+import com.carrotsearch.hppc.IntSet;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
 
@@ -17,11 +16,10 @@ import com.google.common.collect.Queues;
  * @see com.github.steveash.maxclique.GeneralMaxCliqueFinder
  * @author Steve Ash
  */
-public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
-    private static final Logger log = LoggerFactory.getLogger(Special64MaxCliqueFinder.class);
-    private static final IntOpenHashSet emptySet = IntOpenHashSet.from();
+public class Special32MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
+    private static final Logger log = LoggerFactory.getLogger(Special32MaxCliqueFinder.class);
 
-    private LongSet seenCliques;                // keep track of what cliques we've already seen
+    private IntSet seenCliques;                // keep track of what cliques we've already seen
     private int lastWorkedSize;                 // process partials in increasing order to "forget" seen early
     private Deque<MaskPartialClique> work;       // work queue
 
@@ -31,14 +29,13 @@ public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
 
     @Override
     public Clique<T> findMaximum(Collection<T> elements, Weigher<T> weigher) {
-        Preconditions.checkArgument(elements.size() <= 64, " can only use this for sets <= 64");
+        Preconditions.checkArgument(elements.size() <= 32, " can only use this for sets <= 64");
 
         init(elements, weigher);
         if (g.size() == 0) return Clique.nullClique();
 
         while (!work.isEmpty()) {
             MaskPartialClique clique = work.removeFirst();
-            logPop(clique);
 
             int thisSize = clique.size();
             assert (thisSize >= lastWorkedSize);
@@ -58,14 +55,8 @@ public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         return convertBest();
     }
 
-    private void logPop(MaskPartialClique clique) {
-        if (log.isDebugEnabled()) {
-            log.debug("Working partial size " + clique.size() + " " /*+ clique.getMembers()*/);
-        }
-    }
-
     private void tryToAdd(MaskPartialClique clique, int toCheck) {
-        long newMembers = clique.copyOfMembersPlus(toCheck);
+        int newMembers = clique.copyOfMembersPlus(toCheck);
         if (seenCliques.contains(newMembers)) {
             return; // don't even bother -- someone else is already working on it
         }
@@ -77,7 +68,7 @@ public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         double totalNewWeight = clique.getMemberWeight() + maybe;
 
         // we can accept!
-        long leftToCheck = g.neighborsExcludingAsMask(toCheck, newMembers);
+        int leftToCheck = g.neighborsExcludingAsMask(toCheck, newMembers);
         addNewClique(newMembers, leftToCheck, totalNewWeight);
     }
 
@@ -93,7 +84,7 @@ public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
 
     private void init(Iterable<T> elements, Weigher<T> weigher) {
         g = new Graph<>(elements, weigher);
-        seenCliques = LongOpenHashSet.newInstanceWithExpectedSize(g.size() * (g.size() - 1) / 2);
+        seenCliques = IntOpenHashSet.newInstanceWithExpectedSize(g.size() * (g.size() - 1) / 2);
         work = Queues.newArrayDeque();      // queue of partials to evaluate
 
         this.best = MaskPartialClique.nullInstance;
@@ -104,14 +95,14 @@ public class Special64MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
         }
 
         for (int i = 0; i < g.size(); i++) {
-            long member = (1 << i);
+            int member = (1 << i);
 
-            long neighbors = g.neighborsExcludingAsMask(i, 0);
+            int neighbors = g.neighborsExcludingAsMask(i, 0);
             addNewClique(member, neighbors, 0);
         }
     }
 
-    private void addNewClique(long members, long leftToCheck, double weight) {
+    private void addNewClique(int members, int leftToCheck, double weight) {
         work.addLast(new MaskPartialClique(members, leftToCheck, weight));
     }
 }

@@ -48,12 +48,12 @@ public class Graph<T> {
         return neighbors;
     }
 
-    public long neighborsExcludingAsMask(int vertex, long toExclude) {
-        long mask = 0;
+    public int neighborsExcludingAsMask(int vertex, int toExclude) {
+        int mask = 0;
         for (int i = 0; i < verticies.size(); i++) {
             if (vertex == i) continue;              // skip myself
 
-            long candidate = (1 << i);
+            int candidate = (1 << i);
             if ((candidate & ~toExclude) == 0) continue;
 
             if (weight(vertex, i) > 0) {

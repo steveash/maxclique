@@ -13,7 +13,7 @@ public class Cliques {
     public static <T> Clique<T> findMaximum(Collection<T> nodes, Weigher<T> edgeWeigher) {
         int size = nodes.size();
 
-        if (size > 64) {
+        if (size > 32) {
             // but good luck getting it to run...
             return new GeneralMaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
         }
@@ -32,7 +32,7 @@ public class Cliques {
             case 5:
                 return new Special5MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
             default:
-                return new Special64MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new Special32MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
         }
     }
 }

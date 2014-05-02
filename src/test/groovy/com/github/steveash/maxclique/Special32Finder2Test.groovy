@@ -5,12 +5,12 @@ import org.junit.Test
 /**
  * @author Steve Ash
  */
-class Special64Finder2Test {
+class Special32Finder2Test {
     private final GraphTestBuilder builder = new GraphTestBuilder();
 
     @Test
     public void shouldFindABunch() {
-        def sf = new Special64MaxCliqueFinder<>()
+        def sf = new Special32MaxCliqueFinder<>()
         def gf = new GeneralMaxCliqueFinder<>()
 
         for (int i = 3; i < 14; i++ ) {

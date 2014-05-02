@@ -9,18 +9,18 @@ import org.junit.runners.Parameterized.Parameters
  * @author Steve Ash
  */
 @RunWith(Parameterized.class)
-public class Special64FinderTest extends BaseCliqueFinderTest {
+public class Special32FinderTest extends BaseCliqueFinderTest {
 
     public static final int NODE_COUNT = 5
 
-    public Special64FinderTest(MaxCliqueFinder finder) {
+    public Special32FinderTest(MaxCliqueFinder finder) {
         super(finder);
     }
 
     @Parameters
     public static Collection params() {
         return [
-                [new Special64MaxCliqueFinder<String>()] as Object[],
+                [new Special32MaxCliqueFinder<String>()] as Object[],
                 [new GeneralMaxCliqueFinder<String>()] as Object[]
         ]
     }
