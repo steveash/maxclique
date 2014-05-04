@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSet;
  * Special case max clique finder for |V| == 3
  * @author Steve Ash
  */
-public class Special3MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
+public class Special3Finder<T> implements MaxCliqueFinder<T> {
 
     @Override
     public Clique<T> findMaximum(Collection<T> elements, Weigher<T> weigher) {

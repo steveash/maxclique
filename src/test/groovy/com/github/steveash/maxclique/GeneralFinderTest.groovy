@@ -5,10 +5,10 @@ import org.junit.Test
 /**
  * @author Steve Ash
  */
-class GeneralMaxCliqueFinderTest extends BaseCliqueFinderTest {
+class GeneralFinderTest extends BaseCliqueFinderTest {
 
-    GeneralMaxCliqueFinderTest() {
-        super(new GeneralMaxCliqueFinder())
+    GeneralFinderTest() {
+        super(new GeneralFinder())
     }
 
     @Test

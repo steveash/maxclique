@@ -1,6 +1,5 @@
 package com.github.steveash.maxclique
 
-import com.google.common.collect.ImmutableList
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -19,8 +18,8 @@ public class Special3FinderTest extends BaseCliqueFinderTest {
     @Parameters
     public static Collection params() {
         return [
-                [new Special3MaxCliqueFinder<String>()] as Object[],
-                [new GeneralMaxCliqueFinder<String>()] as Object[]
+                [new Special3Finder<String>()] as Object[],
+                [new GeneralFinder<String>()] as Object[]
         ]
     }
 

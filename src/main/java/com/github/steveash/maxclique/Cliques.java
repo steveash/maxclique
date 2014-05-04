@@ -15,7 +15,7 @@ public class Cliques {
 
         if (size > 32) {
             // but good luck getting it to run...
-            return new GeneralMaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+            return new GeneralFinder<T>().findMaximum(nodes, edgeWeigher);
         }
 
         switch (size) {
@@ -24,15 +24,15 @@ public class Cliques {
             case 1:
                 return new Clique<>(ImmutableSet.<T>of(nodes.iterator().next()), 0);
             case 2:
-                return new Special2MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new Special2Finder<T>().findMaximum(nodes, edgeWeigher);
             case 3:
-                return new Special3MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new Special3Finder<T>().findMaximum(nodes, edgeWeigher);
             case 4:
-                return new Special4MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new Special4Finder<T>().findMaximum(nodes, edgeWeigher);
             case 5:
-                return new Special5MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new Special5Finder<T>().findMaximum(nodes, edgeWeigher);
             default:
-                return new Special32MaxCliqueFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new IntMaskGeneralFinder<T>().findMaximum(nodes, edgeWeigher);
         }
     }
 }

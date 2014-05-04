@@ -10,8 +10,8 @@ class Special32Finder2Test {
 
     @Test
     public void shouldFindABunch() {
-        def sf = new Special32MaxCliqueFinder<>()
-        def gf = new GeneralMaxCliqueFinder<>()
+        def sf = new IntMaskGeneralFinder<>()
+        def gf = new GeneralFinder<>()
 
         for (int i = 3; i < 14; i++ ) {
             def inputs = builder.buildInput(i, 3)

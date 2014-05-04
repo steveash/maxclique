@@ -45,8 +45,8 @@ public class PerfTest {
     public void shouldBeFasterWithFastPath() throws Exception {
         Stopwatch w = Stopwatch.createUnstarted();
         List<Graph> graphs = builder.buildInput(4, GRAPH_COUNT);
-        MaxCliqueFinder<String> gf = new GeneralMaxCliqueFinder<>();
-        MaxCliqueFinder<String> sf = new Special4MaxCliqueFinder<>();
+        MaxCliqueFinder<String> gf = new GeneralFinder<>();
+        MaxCliqueFinder<String> sf = new Special4Finder<>();
 
         double total = 0;
         total += run(graphs, gf, GRAPHSET_COUNT);
@@ -68,8 +68,8 @@ public class PerfTest {
     public void sholdBeFasterWithMasks() throws Exception {
         Stopwatch w = Stopwatch.createUnstarted();
         List<Graph> graphs = builder.buildInput(8, GRAPH_COUNT);
-        MaxCliqueFinder<String> gf = new GeneralMaxCliqueFinder<>();
-        MaxCliqueFinder<String> sf = new Special32MaxCliqueFinder<>();
+        MaxCliqueFinder<String> gf = new GeneralFinder<>();
+        MaxCliqueFinder<String> sf = new IntMaskGeneralFinder<>();
 
         double total = 0;
         total += run(graphs, gf, GRAPHSET_COUNT);

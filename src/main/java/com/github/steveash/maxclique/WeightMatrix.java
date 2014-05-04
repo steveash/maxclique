@@ -1,7 +1,5 @@
 package com.github.steveash.maxclique;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Symmetric matrix for weights stored in a 1-dim vector of doubles;
  * diagonal entries always return zero
@@ -27,6 +25,17 @@ public class WeightMatrix {
     public void set(int r, int c, double value) {
         if (r == c) return;
         weights[index(r, c)] = value;
+    }
+
+    public int neighborCount(int v) {
+        int count = 0;
+        for (int i = 0; i < dimension; i++) {
+            if (i == v) continue;
+            if (weight(v, i) > 0) {
+                count += 1;
+            }
+        }
+        return count;
     }
 
     private int index(int r, int c) {

@@ -2,6 +2,7 @@ package com.github.steveash.maxclique;
 
 import com.carrotsearch.hppc.IntArrayDeque;
 import com.carrotsearch.hppc.IntDeque;
+import com.carrotsearch.hppc.IntOpenHashSet;
 import com.carrotsearch.hppc.IntSet;
 import com.carrotsearch.hppc.cursors.IntCursor;
 import com.google.common.collect.ImmutableList;
@@ -31,6 +32,14 @@ public class Graph<T> {
             }
         }
         return m;
+    }
+
+    public IntSet copyOfAllVerticies() {
+        IntOpenHashSet set = new IntOpenHashSet(verticies.size());
+        for (int i = 0; i < verticies.size(); i++) {
+            set.add(i);
+        }
+        return set;
     }
 
     public IntDeque neighborsExcluding(int vertex, IntSet toExclude) {

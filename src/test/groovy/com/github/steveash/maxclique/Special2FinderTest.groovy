@@ -20,8 +20,8 @@ public class Special2FinderTest extends BaseCliqueFinderTest {
     @Parameters
     public static Collection params() {
         return [
-                [new Special2MaxCliqueFinder<String>()] as Object[],
-                [new GeneralMaxCliqueFinder<String>()] as Object[]
+                [new Special2Finder<String>()] as Object[],
+                [new GeneralFinder<String>()] as Object[]
         ]
     }
 

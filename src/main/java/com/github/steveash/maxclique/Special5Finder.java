@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableSet.Builder;
  * Special case max clique finder for |V| == 5
  * @author Steve Ash
  */
-public class Special5MaxCliqueFinder<T> implements MaxCliqueFinder<T> {
+public class Special5Finder<T> implements MaxCliqueFinder<T> {
     private static final boolean O = true;
     private static final boolean F = false;
 

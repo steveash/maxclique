@@ -11,7 +11,6 @@ import com.carrotsearch.hppc.IntDeque;
 import com.carrotsearch.hppc.IntOpenHashSet;
 import com.carrotsearch.hppc.IntSet;
 import com.carrotsearch.hppc.cursors.IntCursor;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 
@@ -20,8 +19,8 @@ import com.google.common.collect.Sets;
  * (maximum) clique from the set
  * @author Steve Ash
  */
-public class GeneralMaxCliqueFinder<T> implements MaxCliqueFinder<T> {
-    private static final Logger log = LoggerFactory.getLogger(GeneralMaxCliqueFinder.class);
+public class GeneralFinder<T> implements MaxCliqueFinder<T> {
+    private static final Logger log = LoggerFactory.getLogger(GeneralFinder.class);
     private static final IntOpenHashSet emptySet = IntOpenHashSet.from();
 
     private Set<IntSet> seenCliques;            // keep track of what cliques we've already seen
