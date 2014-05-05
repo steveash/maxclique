@@ -15,7 +15,6 @@ import com.google.common.base.Preconditions;
  * @author Steve Ash
  */
 public class BronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
-//    private static final Logger log = LoggerFactory.getLogger(BronKerbosch1Finder.class);
 
     private BronPartial best;
     private Graph<T> graph;
@@ -32,9 +31,7 @@ public class BronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
     }
 
     private void find(BronPartial candidate, IntOpenHashSet toCheck, IntOpenHashSet toExclude) {
-//        log.info("Checking {} using toCheck {} and toExclude {}", candidate, toCheck, toExclude);
         if (toCheck.isEmpty() && toExclude.isEmpty()) {
-//            log.info("Found maximal clique {}", candidate);
             if (candidate.getWeight() > best.getWeight()) {
                 best = candidate;
             }
@@ -59,6 +56,5 @@ public class BronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
     private void init(Collection<T> elements, Weigher<T> weigher) {
         graph = new Graph<>(elements, weigher);
         this.best = new BronPartial(singletonSet(0), 0);
-//        log.info("Finding for {}", graph);
     }
 }

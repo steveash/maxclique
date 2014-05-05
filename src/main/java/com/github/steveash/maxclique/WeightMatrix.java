@@ -27,17 +27,6 @@ public class WeightMatrix {
         weights[index(r, c)] = value;
     }
 
-    public int neighborCount(int v) {
-        int count = 0;
-        for (int i = 0; i < dimension; i++) {
-            if (i == v) continue;
-            if (weight(v, i) > 0) {
-                count += 1;
-            }
-        }
-        return count;
-    }
-
     private int index(int r, int c) {
         // precondition the r != c
         if (r > c) return index(c, r);

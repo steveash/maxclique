@@ -9,15 +9,15 @@ import com.google.common.collect.ImmutableSet.Builder;
  * corresponds to vertex 0, the next bit to vertex 1, etc.
  * @author Steve Ash
  */
-public class MaskPartialClique {
+public class NaivePartial {
 
-    public static final MaskPartialClique nullInstance = new MaskPartialClique(0, 0, -1);
+    public static final NaivePartial nullInstance = new NaivePartial(0, 0, -1);
 
     private final int members;
     private final double memberWeight;
     private int leftToCheck;
 
-    public MaskPartialClique(int members, int leftToCheck, double memberWeight) {
+    public NaivePartial(int members, int leftToCheck, double memberWeight) {
         this.members = members;
         this.leftToCheck = leftToCheck;
         this.memberWeight = memberWeight;
@@ -46,8 +46,6 @@ public class MaskPartialClique {
     public int copyOfMembersPlus(int appendThis) {
         return this.members | (1 << appendThis);
     }
-
-    public int getMembers() { return members; }
 
     public double getMemberWeight() { return memberWeight; }
 

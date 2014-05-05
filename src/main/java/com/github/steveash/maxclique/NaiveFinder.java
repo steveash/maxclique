@@ -20,9 +20,9 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
 
     private IntSet seenCliques;                // keep track of what cliques we've already seen
     private int lastWorkedSize;                 // process partials in increasing order to "forget" seen early
-    private Deque<MaskPartialClique> work;       // work queue
+    private Deque<NaivePartial> work;       // work queue
 
-    private MaskPartialClique best = MaskPartialClique.nullInstance;
+    private NaivePartial best = NaivePartial.nullInstance;
 
     private Graph<T> g;
 
@@ -34,7 +34,7 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
         if (g.size() == 0) return Clique.nullClique();
 
         while (!work.isEmpty()) {
-            MaskPartialClique clique = work.removeFirst();
+            NaivePartial clique = work.removeFirst();
 
             int thisSize = clique.size();
             assert (thisSize >= lastWorkedSize);
@@ -54,7 +54,7 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
         return convertBest();
     }
 
-    private void tryToAdd(MaskPartialClique clique, int toCheck) {
+    private void tryToAdd(NaivePartial clique, int toCheck) {
         int newMembers = clique.copyOfMembersPlus(toCheck);
         if (seenCliques.contains(newMembers)) {
             return; // don't even bother -- someone else is already working on it
@@ -75,7 +75,7 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
         return best.convertToClique(g);
     }
 
-    private void finishClique(MaskPartialClique clique) {
+    private void finishClique(NaivePartial clique) {
         if (clique.getMemberWeight() > best.getMemberWeight()) {
             best = clique;
         }
@@ -86,7 +86,7 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
         seenCliques = IntOpenHashSet.newInstanceWithExpectedSize(g.size() * (g.size() - 1) / 2);
         work = Queues.newArrayDeque();      // queue of partials to evaluate
 
-        this.best = MaskPartialClique.nullInstance;
+        this.best = NaivePartial.nullInstance;
         lastWorkedSize = 0;
 
         if (log.isDebugEnabled()) {
@@ -102,6 +102,6 @@ public class NaiveFinder<T> implements MaxCliqueFinder<T> {
     }
 
     private void addNewClique(int members, int leftToCheck, double weight) {
-        work.addLast(new MaskPartialClique(members, leftToCheck, weight));
+        work.addLast(new NaivePartial(members, leftToCheck, weight));
     }
 }

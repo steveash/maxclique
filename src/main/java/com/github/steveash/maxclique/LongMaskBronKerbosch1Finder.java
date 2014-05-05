@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet.Builder;
  * @author Steve Ash
  */
 public class LongMaskBronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
-//    private static final Logger log = LoggerFactory.getLogger(BronKerbosch1Finder.class);
 
     private long bestMask;
     private double bestWeight;
@@ -32,9 +31,7 @@ public class LongMaskBronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
     }
 
     private void find(final long candidate, double candidateWeight, long toCheck, long toExclude) {
-//        log.info("Checking {} using toCheck {} and toExclude {}", candidate, toCheck, toExclude);
         if (isMaskEmpty(toCheck) && isMaskEmpty(toExclude)) {
-//            log.info("Found maximal clique {}", candidate);
             if (candidateWeight > bestWeight) {
                 this.bestWeight = candidateWeight;
                 this.bestMask = candidate;
@@ -76,7 +73,6 @@ public class LongMaskBronKerbosch1Finder<T> implements MaxCliqueFinder<T> {
         graph = new Graph<>(elements, weigher);
         this.bestMask = 1;
         this.bestWeight = 0;
-//        log.info("Finding for {}", graph);
     }
 
     public <T> Clique<T> bestToClique(Graph<T> g) {

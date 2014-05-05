@@ -2,8 +2,6 @@ package com.github.steveash.maxclique;
 
 import static com.github.steveash.maxclique.SetUtils.addToMask;
 
-import com.carrotsearch.hppc.IntArrayDeque;
-import com.carrotsearch.hppc.IntDeque;
 import com.carrotsearch.hppc.IntOpenHashSet;
 import com.carrotsearch.hppc.IntSet;
 import com.carrotsearch.hppc.cursors.IntCursor;
@@ -81,21 +79,6 @@ public class Graph<T> {
             }
         }
         return copy;
-    }
-
-    public IntDeque neighborsExcluding(int vertex, IntSet toExclude) {
-        IntDeque neighbors = new IntArrayDeque(verticies.size() - 1);
-
-        for (int i = 0; i < verticies.size(); i++) {
-            if (vertex == i) continue;              // skip myself
-            if (toExclude.contains(i)) continue;    // skip the toExcludes
-
-            if (weight(vertex, i) > 0) {
-                neighbors.addLast(i);
-            }
-        }
-
-        return neighbors;
     }
 
     public int neighborsExcludingAsMask(int vertex, int toExclude) {
