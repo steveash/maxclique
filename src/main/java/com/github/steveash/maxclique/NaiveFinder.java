@@ -12,12 +12,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
 
 /**
- * Special version of the clique finder for graphs with <= 64 verticies
- * @see GeneralFinder
+ * Special version of the clique finder for graphs with <= 32 verticies
  * @author Steve Ash
  */
-public class IntMaskGeneralFinder<T> implements MaxCliqueFinder<T> {
-    private static final Logger log = LoggerFactory.getLogger(IntMaskGeneralFinder.class);
+public class NaiveFinder<T> implements MaxCliqueFinder<T> {
+    private static final Logger log = LoggerFactory.getLogger(NaiveFinder.class);
 
     private IntSet seenCliques;                // keep track of what cliques we've already seen
     private int lastWorkedSize;                 // process partials in increasing order to "forget" seen early

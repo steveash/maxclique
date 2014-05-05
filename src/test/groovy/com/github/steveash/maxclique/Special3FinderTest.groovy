@@ -19,7 +19,7 @@ public class Special3FinderTest extends BaseCliqueFinderTest {
     public static Collection params() {
         return [
                 [new Special3Finder<String>()] as Object[],
-                [new GeneralFinder<String>()] as Object[]
+                [new LongMaskBronKerbosch1Finder<String>()] as Object[]
         ]
     }
 

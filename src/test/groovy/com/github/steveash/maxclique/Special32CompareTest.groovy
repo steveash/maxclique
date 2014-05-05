@@ -10,8 +10,8 @@ class Special32CompareTest extends BaseCompareTest {
 
     Special32CompareTest() {
         super(
-                new IntMaskGeneralFinder<String>(),
-                new GeneralFinder<String>()
+                new NaiveFinder<String>(),
+                new LongMaskBronKerbosch1Finder<String>()
         )
     }
 }

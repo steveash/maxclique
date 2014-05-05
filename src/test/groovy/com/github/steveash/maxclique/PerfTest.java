@@ -45,17 +45,10 @@ public class PerfTest {
 
     @Test
     public void shouldBeFasterWithFastPath() throws Exception {
-        MaxCliqueFinder<String> gf = new GeneralFinder<>();
+        MaxCliqueFinder<String> gf = new LongMaskBronKerbosch1Finder<>();
         MaxCliqueFinder<String> sf = new Special4Finder<>();
 
         compareSpeedOf(gf, sf, 4);
-    }
-
-    @Test
-    public void sholdBeFasterWithMasks() throws Exception {
-        MaxCliqueFinder<String> gf = new GeneralFinder<>();
-        MaxCliqueFinder<String> sf = new IntMaskGeneralFinder<>();
-        compareSpeedOf(gf, sf, 8);
     }
 
     @Test

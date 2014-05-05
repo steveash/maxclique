@@ -10,7 +10,7 @@ class Bron1CompareTest extends BaseCompareTest {
 
     Bron1CompareTest() {
         super(
-                new IntMaskGeneralFinder<String>(),
+                new NaiveFinder<String>(),
                 new BronKerbosch1Finder<String>()
         )
     }

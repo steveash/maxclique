@@ -8,7 +8,7 @@ import org.junit.Test
 class GeneralFinderTest extends BaseCliqueFinderTest {
 
     GeneralFinderTest() {
-        super(new GeneralFinder())
+        super(new BronKerbosch1Finder())
     }
 
     @Test

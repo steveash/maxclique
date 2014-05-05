@@ -5,7 +5,7 @@ import org.junit.Before
 /**
  * @author Steve Ash
  */
-class BaseCliqueFinderTest {
+abstract class BaseCliqueFinderTest {
 
     TableWeigher w
     private final MaxCliqueFinder finder
