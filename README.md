@@ -1,11 +1,11 @@
 maxclique
 =========
 
-Simple implementation of maximum clique for java.
+Simple implementation of maximum edge weighted clique for java using the Bron-Kerbosch algorithm.
 Doesn't recompute weight edges more than once.
-Uses simple back-tracking to avoid all 2^n comparisons.
 Has "fast path" hardcoded implementations for graphs with 2, 3, 4, and 5 nodes (which is my typical case).
-For graphs size 6 - 32 it uses ints to represent sets which avoids lots of allocations
+For graphs size 6 - 64 it uses long to represent sets avoiding extra allocations.
+Can find max weighted clique in < 15 microsecs for graphs <= 12 nodes.  Less than 1 microsec for graphs <= 5 nodes
 
 Usage:
 ```` java
