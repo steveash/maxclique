@@ -12,6 +12,7 @@ import com.carrotsearch.hppc.IntSet;
  */
 public class PartialClique {
 
+
     public static final PartialClique nullPartial = new PartialClique(new IntOpenHashSet(), new IntArrayDeque(), -1);
 
     private final /* immutable */ IntSet members;

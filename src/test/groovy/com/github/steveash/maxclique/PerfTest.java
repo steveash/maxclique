@@ -18,7 +18,7 @@ import com.google.common.base.Stopwatch;
 public class PerfTest {
     private static final Logger log = LoggerFactory.getLogger(PerfTest.class);
 
-    private static final int GRAPH_COUNT = 100;
+    private static final int GRAPH_COUNT = 2000;
     private static final int GRAPHSET_COUNT = 100;
     private GraphTestBuilder builder = new GraphTestBuilder();
 
@@ -27,14 +27,16 @@ public class PerfTest {
         Stopwatch w = Stopwatch.createUnstarted();
         MaxCliqueFinderFacade<String> finder = new MaxCliqueFinderFacade<>();
 
+        int graphCount = 500;
+        int runCount = 25;
         for (int i = 3; i < 20; i++) {
-            List<Graph> in = builder.buildInput(i, 1).subList(0, 1);
-            run(in, finder, 1);
+            List<Graph> in = builder.buildInput(i, graphCount);
+            run(in, finder, runCount);
 
             w.reset().start();
-            run(in, finder, 1);
+            run(in, finder, runCount);
             long micros = w.stop().elapsed(TimeUnit.MICROSECONDS);
-            long count = 1;
+            long count = graphCount * runCount;
 
             double avg = ((double) micros) / count;
             log.info("Graph Size " + i + " total " + micros + " avg mus per " + avg);
@@ -43,48 +45,45 @@ public class PerfTest {
 
     @Test
     public void shouldBeFasterWithFastPath() throws Exception {
-        Stopwatch w = Stopwatch.createUnstarted();
-        List<Graph> graphs = builder.buildInput(4, GRAPH_COUNT);
         MaxCliqueFinder<String> gf = new GeneralFinder<>();
         MaxCliqueFinder<String> sf = new Special4Finder<>();
 
-        double total = 0;
-        total += run(graphs, gf, GRAPHSET_COUNT);
-        total += run(graphs, sf, GRAPHSET_COUNT);
-
-        w.start();
-        total += run(graphs, gf, GRAPHSET_COUNT);
-        long genTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
-
-        w.reset().start();
-        total += run(graphs, sf, GRAPHSET_COUNT);
-        long specTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
-
-        log.info("Overall total weight: " + total);
-        log.info("General mus " + genTime + " , fastpath mus " + specTime);
+        compareSpeedOf(gf, sf, 4);
     }
 
     @Test
     public void sholdBeFasterWithMasks() throws Exception {
-        Stopwatch w = Stopwatch.createUnstarted();
-        List<Graph> graphs = builder.buildInput(8, GRAPH_COUNT);
         MaxCliqueFinder<String> gf = new GeneralFinder<>();
         MaxCliqueFinder<String> sf = new IntMaskGeneralFinder<>();
+        compareSpeedOf(gf, sf, 8);
+    }
+
+    @Test
+    public void bronShouldBeFaster() throws Exception {
+        MaxCliqueFinder<String> gf = new LongMaskBronKerbosch1Finder<>();
+        MaxCliqueFinder<String> sf = new BronKerbosch1Finder<>();
+        compareSpeedOf(gf, sf, 8);
+    }
+
+    private void compareSpeedOf(MaxCliqueFinder<String> afinder, MaxCliqueFinder<String> bfinder, int graphSize) {
+        Stopwatch w = Stopwatch.createUnstarted();
+        List<Graph> graphs = builder.buildInput(graphSize, GRAPH_COUNT);
 
         double total = 0;
-        total += run(graphs, gf, GRAPHSET_COUNT);
-        total += run(graphs, sf, GRAPHSET_COUNT);
+        total += run(graphs, afinder, GRAPHSET_COUNT);
+        total += run(graphs, bfinder, GRAPHSET_COUNT);
 
         w.start();
-        total += run(graphs, gf, GRAPHSET_COUNT);
-        long genTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
+        total += run(graphs, afinder, GRAPHSET_COUNT);
+        long atime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         w.reset().start();
-        total += run(graphs, sf, GRAPHSET_COUNT);
-        long specTime = w.stop().elapsed(TimeUnit.MILLISECONDS);
+        total += run(graphs, bfinder, GRAPHSET_COUNT);
+        long btime = w.stop().elapsed(TimeUnit.MILLISECONDS);
 
         log.info("Overall total weight: " + total);
-        log.info("General mus " + genTime + " , fastpath mus " + specTime);
+        log.info(afinder.getClass().getSimpleName() + " mus " + atime);
+        log.info(bfinder.getClass().getSimpleName() + " mus " + btime);
     }
 
     private double run(List<Graph> graphs, MaxCliqueFinder<String> gf, int runCount) {
@@ -98,6 +97,4 @@ public class PerfTest {
         }
         return total;
     }
-
-
 }

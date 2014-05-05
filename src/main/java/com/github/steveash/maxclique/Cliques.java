@@ -13,16 +13,15 @@ public class Cliques {
     public static <T> Clique<T> findMaximum(Collection<T> nodes, Weigher<T> edgeWeigher) {
         int size = nodes.size();
 
-        if (size > 32) {
-            // but good luck getting it to run...
-            return new GeneralFinder<T>().findMaximum(nodes, edgeWeigher);
+        if (size > 64) {
+            return new BronKerbosch1Finder<T>().findMaximum(nodes, edgeWeigher);
         }
 
         switch (size) {
             case 0:
                 throw new IllegalArgumentException("Cannot find a clique with an empty graph");
             case 1:
-                return new Clique<>(ImmutableSet.<T>of(nodes.iterator().next()), 0);
+                return new Clique<>(ImmutableSet.of(nodes.iterator().next()), 0);
             case 2:
                 return new Special2Finder<T>().findMaximum(nodes, edgeWeigher);
             case 3:
@@ -32,7 +31,7 @@ public class Cliques {
             case 5:
                 return new Special5Finder<T>().findMaximum(nodes, edgeWeigher);
             default:
-                return new IntMaskGeneralFinder<T>().findMaximum(nodes, edgeWeigher);
+                return new LongMaskBronKerbosch1Finder<T>().findMaximum(nodes, edgeWeigher);
         }
     }
 }
