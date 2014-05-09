@@ -1,8 +1,9 @@
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 
+group = 'com.github.steveash.maxclique'
 sourceCompatibility = 1.7
-version = '1.0.0.0'
+version = '1.0.0.1'
 
 repositories {
     mavenCentral()
@@ -19,4 +20,12 @@ dependencies {
 
 //    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }

@@ -8,6 +8,14 @@ import com.google.common.collect.ImmutableSet;
  * @author Steve Ash
  */
 public class MaxCliqueFinderFacade<T> implements MaxCliqueFinder<T> {
+
+    private static final MaxCliqueFinderFacade<Object> instance = new MaxCliqueFinderFacade<>();
+
+    @SuppressWarnings("unchecked")
+    public static <T> MaxCliqueFinderFacade<T> getInstance() {
+        return (MaxCliqueFinderFacade<T>) instance;
+    }
+
     @Override
     public Clique<T> findMaximum(Collection<T> nodes, Weigher<T> edgeWeigher) {
         return findMaximumBySize(nodes, edgeWeigher);
