@@ -1,5 +1,6 @@
 maxclique
 =========
+See http://en.wikipedia.org/wiki/Clique_problem for a general discription of cliques
 
 - Simple implementation of maximum edge weighted clique for java using the Bron-Kerbosch algorithm.
 - Doesn't recompute weight edges more than once.
